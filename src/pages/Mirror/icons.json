@@ -1,0 +1,74 @@
+[
+    {
+        "name": "anthon",
+        "icon": "aosc os"
+    },
+    {
+        "name":"archlinux",
+        "icon":"arch linux"
+    },
+    {
+        "name":"armbian",
+        "icon":"armbian"
+    },
+    {
+        "name":"bioarchlinux",
+        "icon":"bioarch linux"
+    },
+    {
+        "name":"debian",
+        "icon":"debian"
+    },
+    {
+        "name":"debian-iso",
+        "icon":"debian"
+    },
+    {
+        "name":"debian-security",
+        "icon":"debian"
+    },
+    {
+        "name":"GXDE",
+        "icon":"gxde"
+    },
+    {
+        "name": "kali",
+        "icon": "kali linux"
+    },
+    {
+        "name": "kali-images",
+        "icon": "kali linux"
+    },
+    {
+        "name":"github-release",
+        "icon":"github"
+    },
+    {
+        "name":"manjaro",
+        "icon":"manjaro"
+    },
+    {
+        "name":"openwrt",
+        "icon":"openwrt"
+    },
+    {
+        "name":"python-release",
+        "icon":"python"
+    },
+    {
+        "name":"rocky",
+        "icon":"rocky linux"
+    },
+    {
+        "name":"termux",
+        "icon":"termux"
+    },
+    {
+        "name":"ubuntu",
+        "icon":"ubuntu"
+    },
+    {
+        "name":"ubuntu-releases",
+        "icon":"ubuntu"
+    }
+]

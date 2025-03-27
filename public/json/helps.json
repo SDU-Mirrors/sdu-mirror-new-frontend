@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Arch Linux",
+    "route": "archlinux",
+    "url": "/markdown/helps/ArchLinux.md"
+  },
+  {
+    "name": "Debian",
+    "route": "debian",
+    "url": "/markdown/helps/Debian.md"
+  },
+  {
+    "name": "LXC Images",
+    "route": "lxc-images",
+    "url": "/markdown/helps/lxc-images.md"
+  },
+  {
+    "name": "Rocky Linux",
+    "route": "rockylinux",
+    "url": "/markdown/helps/RockyLinux.md"
+  },
+  {
+    "name": "Ubuntu",
+    "route": "ubuntu",
+    "url": "/markdown/helps/Ubuntu.md"
+  },
+  {
+    "name": "Windows ISO",
+    "route": "windows-iso",
+    "url": "/markdown/helps/Windows-iso.md"
+  }
+]

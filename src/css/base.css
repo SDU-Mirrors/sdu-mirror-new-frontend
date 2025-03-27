@@ -1,0 +1,128 @@
+/*
+    下面这几个CSS是为了解决这个问题：
+        在部分移动端设备上, 当系统处于深色模式时, 浏览器会自动反色, 破坏了网页自身的深色模式方案
+        通过指定body中的background-color与color, 并通过[data-theme]来判断网页当前使用浅色模式还是深色模式
+        这样便解决了浏览器自动反色的问题
+
+     注意:此方法同时需要Index.html中的meta配合, 加上下面这句:
+        <meta name="color-scheme" content="light dark">
+*/
+:root {
+    /* Light mode colors */
+    --background-color-light: #ffffff;
+    --text-color-light: #000000;
+
+    /* Dark mode colors */
+    --background-color-dark: #121212;
+    --text-color-dark: #ffffff;
+}
+
+[data-theme="light"] {
+    --background-color: var(--background-color-light);
+    --text-color: var(--text-color-light);
+}
+
+[data-theme="dark"] {
+    --background-color: var(--background-color-dark);
+    --text-color: var(--text-color-dark);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/*注：如果网页不需要提供主题切换按钮, 仅根据系统偏好来提供深色模式的话, 下面这个CSS同样能解决浏览器自动反色的问题*/
+/*@media (prefers-color-scheme: dark) {*/
+/*    :root {*/
+/*        !* 如果没有这一句color-scheme: dark，部分浏览器的深色模式会自动反色部分元素，导致破坏原有的深色模式方案*!*/
+/*        color-scheme: dark;*/
+/*    }*/
+/*}*/
+
+* {
+    margin: 0;
+    padding: 0;
+    /* css3盒子模型 */
+    box-sizing: border-box;
+}
+
+em,
+i {
+    font-style: normal
+}
+
+/*li {*/
+/*    list-style: none*/
+/*}*/
+
+img {
+    border: 0;
+    vertical-align: middle
+}
+
+button {
+    cursor: pointer
+}
+
+a {
+    text-decoration: none
+}
+
+a:hover {
+    color: rgb(53,111,205)
+}
+
+button,
+input {
+    font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    border: 0;
+    outline: none;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    background-color: #fff;
+    font-family:Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+}
+
+.hide,
+.none {
+    display: none
+}
+
+.clearfix:after {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: ".";
+    height: 0
+}
+
+.clearfix {
+    *zoom: 1
+}
+
+/* 滚动条相关 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0);
+}
+:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0);
+}
+
+/*@media (prefers-color-scheme: dark){*/
+/*    :root {*/
+/*        !* 如果没有这一句，部分浏览器的深色模式会自动反色部分元素，导致破坏原有的深色模式方案*!*/
+/*        color-scheme: dark;*/
+/*    }*/
+/*}*/
