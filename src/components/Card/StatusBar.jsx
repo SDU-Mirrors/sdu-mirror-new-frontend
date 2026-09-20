@@ -1,4 +1,3 @@
-import React, {Fragment} from 'react';
 import SyncStatus from "./SyncStatus.jsx";
 
 import {calcSize, calcLastTimestamp, renderTimestamp} from '/src/utils/utils.js'

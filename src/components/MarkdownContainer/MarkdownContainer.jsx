@@ -1,42 +1,69 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import {Fragment, useEffect, useRef, useState} from 'react';
 import ReactMarkdown from 'react-markdown'
-import axios from "axios";
 
 import {showToast} from "src/utils/utils.js";
-import Loading from "src/components/Loading/Loading.jsx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 
+import CorrectSVG from "src/assets/svg/correct.svg?react"
+import CopySVG from "src/assets/svg/copy.svg?react"
+
 import 'src/css/github-markdown.css';
-// import testMD from '/markdown/docs/blog/2019-04-21-BirthOfYetAnotherMirrorSite.md?url'
-import testMD from '/markdown/docs/guide/2021-11-24-InstallUbuntuInVMware.md?url'
 
-function MarkdownContainer(props) {
-    const {url} = props
-    let baseURL = getDirectory(url)
-    let timestamp = new Date().getTime();
-    timestamp = Math.floor(timestamp / 60000)
-    const [mdContent, setMdContent] = useState('')
-    const [isLoad,setIsLoad] = useState(false)
-    useEffect(() => {
+function getDirectory(filePath) {
+    if(filePath === undefined) return ''
 
-        setMdContent('')
-        setIsLoad(false)
+    const parts = filePath.split('/');
+    parts.pop();
+    return parts.join('/') + "/";
+}
 
-        let domain = ""
-        axios({
-            url:domain+url,
-            method:"get",
-            params:{
-                timestamp
+function CodeBlock({className, children}) {
+        const [copied, setCopied] = useState(false);
+        const resetTimer = useRef();
+        const codeContent = String(children ?? '');
+        const isCodeBlock = codeContent.includes('\n') || (className && className.startsWith('language-'));
+
+        useEffect(() => () => clearTimeout(resetTimer.current), []);
+
+        const handleCopy = async () => {
+            try {
+                await navigator.clipboard.writeText(codeContent);
+                setCopied(true);
+                clearTimeout(resetTimer.current);
+                resetTimer.current = setTimeout(() => setCopied(false), 1000);
+            } catch {
+                showToast("复制失败，请手动复制", "error");
             }
-        }).then(response => {
-            setMdContent(response.data)
-            setIsLoad(true)
-        }).catch(error => {
-            showToast("获取文章内容失败，请尝试手动刷新","error")
-        })
-    }, [url]);
+        };
+
+        if (!isCodeBlock) {
+            return <code className={className}>{children}</code>;
+        }
+
+        return (
+            <div className="relative group">
+                <button
+                    onClick={handleCopy}
+                    className="absolute top-0 right-0 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer z-10"
+                    aria-label="复制代码"
+                >
+                    {copied ? (
+                        <CorrectSVG className="w-6 h-6 fill-green-400" />
+                    ) : (
+                        <CopySVG className="w-6 h-6 fill-[#666666]" />
+                    )}
+                </button>
+                <div className="overflow-x-auto">
+                    <code className={className}>{children}</code>
+                </div>
+            </div>
+        );
+}
+
+function MarkdownContainer({url, content = ''}) {
+    const baseURL = getDirectory(url)
+    const timestamp = Math.floor(Date.now() / 60000)
 
     const components = {
         img: (props) => {
@@ -51,27 +78,16 @@ function MarkdownContainer(props) {
 
             );
         },
+        code: CodeBlock,
     };
-    function getDirectory(filePath) {
-        if(filePath === undefined) return ''
-
-        const parts = filePath.split('/');
-        parts.pop(); // 移除文件名
-        return parts.join('/') + "/";
-    }
 
     return (
         <Fragment>
-            {
-                isLoad?
-                    <div className="markdown-body">
-                        <ReactMarkdown className={""} remarkPlugins={[remarkGfm,remarkFrontmatter]} children={mdContent} components={components}/>
-                    </div>
-                    :
-                    <div className="h-[50vh]">
-                        <Loading/>
-                    </div>
-            }
+            <div className="markdown-body">
+                <ReactMarkdown className={""} remarkPlugins={[remarkGfm,remarkFrontmatter]} components={components}>
+                    {content}
+                </ReactMarkdown>
+            </div>
         </Fragment>
 
     );

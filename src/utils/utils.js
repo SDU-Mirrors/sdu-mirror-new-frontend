@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import dayjs_zh_cn from 'dayjs/locale/zh-cn.js'
+import 'dayjs/locale/zh-cn.js'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
 import {toast,Slide} from "react-toastify";
 

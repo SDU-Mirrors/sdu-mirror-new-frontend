@@ -1,11 +1,9 @@
-import React from 'react';
 import List from "./List.jsx";
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Tabs from '@radix-ui/react-tabs';
 
 import Loading from "src/components/Loading/Loading.jsx"
 import CloseSVG from "src/assets/svg/close.svg?react"
-import LoadingSVG from "src/assets/svg/loading.svg?react"
 
 function DownloadCard(props) {
     const {open,setOpen,isoLinks,isLoad=false} = props
@@ -21,10 +19,10 @@ function DownloadCard(props) {
                     <Tabs.Root defaultValue="tab_os" className="min-h-0 flex-grow flex flex-col">
                         <Tabs.List className="">
                             {
-                                isoLinks.hasOwnProperty('os') ? <Tabs.Trigger value="tab_os" className="p-2 mr-4 data-[state=active]:text-blue-500 hover:bg-black hover:bg-opacity-20">操作系统</Tabs.Trigger> : <></>
+                                Object.hasOwn(isoLinks, 'os') ? <Tabs.Trigger value="tab_os" className="p-2 mr-4 data-[state=active]:text-blue-500 hover:bg-black hover:bg-opacity-20">操作系统</Tabs.Trigger> : <></>
                             }
                             {
-                                isoLinks.hasOwnProperty('app') ? <Tabs.Trigger value="tab_app" className="p-2 mr-4 data-[state=active]:text-blue-500 hover:bg-black hover:bg-opacity-20">应用程序</Tabs.Trigger> : <></>
+                                Object.hasOwn(isoLinks, 'app') ? <Tabs.Trigger value="tab_app" className="p-2 mr-4 data-[state=active]:text-blue-500 hover:bg-black hover:bg-opacity-20">应用程序</Tabs.Trigger> : <></>
                             }
                         </Tabs.List>
 

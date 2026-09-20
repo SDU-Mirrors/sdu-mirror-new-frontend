@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import {Fragment, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -9,33 +9,12 @@ import TimeSVG from "src/assets/svg/time.svg?react";
 
 function Menu(props) {
     const {docsList,isDocsListLoad} = props
-    const [filterDocsArray,setFilterDocsArray] = useState([])
     const [searchKeyword,setSearchKeyword] = useState('')
-
-    useEffect(() => {
-        setFilterDocsArray(docsList)
-    }, [isDocsListLoad]);
+    const filterDocsArray = docsList.filter(doc =>
+        doc.name.toLowerCase().includes(searchKeyword.toLowerCase())
+    )
     function calcTimestamp(time){
         return dayjs(time).format('YYYY-MM-DD')
-    }
-
-    function setKeyword(Keyword){
-        // console.log(Keyword)
-        setSearchKeyword(Keyword)
-        updateFilterDocsArray(Keyword)
-    }
-
-    function updateFilterDocsArray(Keyword){
-        // console.log(searchKeyword,searchKeyword === '')
-        if(Keyword === ''){
-            setFilterDocsArray(docsList)
-        }
-        else{
-            let tmpArr = docsList.filter(doc=>{
-                return doc.name.toLowerCase().includes(Keyword.toLowerCase())
-            })
-            setFilterDocsArray(tmpArr)
-        }
     }
 
     return (
@@ -44,18 +23,18 @@ function Menu(props) {
                 isDocsListLoad?
                     <Fragment>
                         <div className="p-2">
-                            <SearchBar setKeyword={setKeyword} placeholder={"搜索..."}></SearchBar>
+                            <SearchBar setKeyword={setSearchKeyword} placeholder={"搜索..."}></SearchBar>
                         </div>
                         <div className="px-2">
                             <ul>
                                 {
-                                    filterDocsArray.map((doc,index)=>{
+                                    filterDocsArray.map((doc)=>{
                                         return (
                                             <NavLink
                                                 className={({ isActive }) => {
                                                     return isActive ? 'text-blue-400' : ''
                                                 }}
-                                                to={`./${doc.route}`} key={index} >
+                                                to={`./${doc.route}`} key={doc.route} >
                                                 <li className="text-xl mb-2 p-2 select-none cursor-pointer rounded-2xl hover:bg-gray-200 hover:bg-opacity-80 dark:hover:bg-gray-700">
                                                     <div>{doc.name}</div>
                                                     <div className="text-sm text-gray-500 flex items-center">

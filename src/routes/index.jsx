@@ -1,11 +1,11 @@
-import HomePage from "../pages/HomePage/HomePage.jsx"
-import Mirror from "../pages/Mirror/Mirror.jsx"
-import DocumentPage from "../pages/DocumentPage/DocumentPage.jsx";
-import HelpPage from "../pages/HelpPage/HelpPage.jsx";
-import About from "../pages/About/About.jsx"
+import HomePage from "src/pages/HomePage/HomePage.jsx"
+import Mirror from "src/pages/Mirror/Mirror.jsx"
+import DocumentPage from "src/pages/DocumentPage/DocumentPage.jsx";
+import HelpPage from "src/pages/HelpPage/HelpPage.jsx";
+import About from "src/pages/About/About.jsx"
 import DocumentViewer from "src/pages/DocumentPage/DocumentViewer/DocumentViewer.jsx";
 import HelpViewer from "src/pages/HelpPage/HelpViewer/HelpViewer.jsx";
-import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import NotFoundPage from "src/pages/NotFoundPage/NotFoundPage.jsx";
 import {Navigate} from "react-router-dom";
 
 export default [

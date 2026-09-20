@@ -1,4 +1,3 @@
-import React, {Fragment} from 'react';
 import CircleSVG from "src/assets/svg/circle.svg?react"
 
 function SyncStatus({status,sync_method}) {

@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { ThemeContext } from '../ThemeProvider/ThemeProvider.jsx';
+import { useContext } from 'react';
+import { ThemeContext } from 'src/components/ThemeProvider/ThemeProvider.jsx';
 
 import LightModeSVG from "src/assets/svg/sun.svg?react"
 import DarkModeSVG from "src/assets/svg/moon.svg?react"

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import LoadingSVG from "src/assets/svg/loading.svg?react";
 
 function Loading(props) {
@@ -6,10 +6,11 @@ function Loading(props) {
     const [displayLoading,setDisplayLoading] = useState(false)
 
     useEffect(() => {
-        setTimeout(()=>{
+        const timer = setTimeout(()=>{
             setDisplayLoading(true)
         },pending)
-    }, []);
+        return () => clearTimeout(timer)
+    }, [pending]);
 
     return (
         <div className="flex items-center justify-center w-full h-full">

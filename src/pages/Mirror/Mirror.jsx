@@ -1,22 +1,22 @@
-import React, {Fragment, useState, useEffect} from 'react';
-import Footer from "../../components/Layouts/Footer.jsx";
+import {Fragment, useState, useEffect, useRef} from 'react';
+import Footer from "src/components/Layouts/Footer.jsx";
 import CardMode from "./CardMode/CardMode.jsx";
 import ListMode from "./ListMode/ListMode.jsx"
-import axios from "axios";
 import {showToast} from "src/utils/utils.js";
+import {getMirrorsListData, getIsoLinksData, isUsingMockData} from "src/services/api.js";
 
-import DownloadSVG from "src/assets/svg/download.svg?react"
 import LetterASVG from "src/assets/svg/letterA.svg?react"
 import AboutSVG from "src/assets/svg/about.svg?react"
 import IsoSVG from "src/assets/svg/iso.svg?react"
 import ViewGridList from "src/assets/svg/view-grid-list.svg?react"
 import ViewGridCard from "src/assets/svg/view-grid-card.svg?react"
 import DownloadCard from "src/pages/Mirror/DownloadCard/DownloadCard.jsx";
-import Loading from "../../components/Loading/Loading.jsx";
+import Loading from "src/components/Loading/Loading.jsx";
 
 function Mirror() {
     // 是否已经获取了镜像列表
     const [loaded,setLoaded] = useState(false)
+    const [loadError,setLoadError] = useState(false)
     // 镜像列表
     const [mirrorsList,setMirrorsList] = useState([])
     // ISO下载链接列表
@@ -31,7 +31,8 @@ function Mirror() {
     const [showFriendlyName,setShowFriendlyName] = useState(true)
 
     // 是否打开了获取下载链接的弹窗
-    const [openDownloadCard, setOpenDownloadCard] = React.useState(false)
+    const [openDownloadCard, setOpenDownloadCard] = useState(false)
+    const isoRequestRef = useRef(null)
 
     function handleChange(option){
         if(option === 'showFriendlyName'){
@@ -43,13 +44,10 @@ function Mirror() {
         }
     }
 
-    function getMirrorsList(){
-        let domain = import.meta.env.VITE_APP_BASE_URL || "https://mirrors.sdu.edu.cn"
-        axios({
-            url:domain+"/sync.json",
-            method:"get"
-        }).then(response => {
-            let mirrorsList = response.data;
+    async function getMirrorsList(signal){
+        try {
+            let mirrorsList = await getMirrorsListData({signal});
+
             mirrorsList.sort((a, b) => {
                 return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
             });
@@ -63,18 +61,27 @@ function Mirror() {
 
             setLoaded(true)
             setMirrorsList(mirrorsList)
-        }).catch(error => {
+
+            if (isUsingMockData('mirrors')) {
+                showToast("正在使用虚拟镜像数据", "info");
+            }
+        } catch (error) {
+            if (signal.aborted) return
+            setLoaded(true)
+            setLoadError(true)
             showToast("获取镜像列表失败，请尝试手动刷新","error")
-        })
+        }
     }
 
-    function getIsoLinks(){
-        let domain = import.meta.env.VITE_APP_BASE_URL || "https://mirrors.sdu.edu.cn"
-        axios({
-            url:domain+"/iso-links.json",
-            method:"get"
-        }).then(response => {
-            let isoLinks = response.data.map((item,index)=>{
+    async function getIsoLinks(){
+        if (isIsoLinkLoad || isoRequestRef.current) return
+
+        const controller = new AbortController()
+        isoRequestRef.current = controller
+
+        try {
+            const response = await getIsoLinksData({signal: controller.signal});
+            let isoLinks = response.map((item,index)=>{
 
                 item.children = item.children.map(obj=>{
                     let text = obj.label
@@ -100,21 +107,30 @@ function Mirror() {
                 }),
                 {},
             );
-            console.log(isoLinks)
             setIsoLinks(isoLinks)
             setIsIsoLinkLoad(true)
-        }).catch(error => {
-            showToast("获取下载链接失败，请尝试手动刷新","error")
-        })
+        } catch (error) {
+            if (!controller.signal.aborted) {
+                showToast("获取下载链接失败，请尝试重新打开弹窗","error")
+            }
+        } finally {
+            isoRequestRef.current = null
+        }
     }
 
     function openCard(){
+        if (!openDownloadCard) getIsoLinks()
         setOpenDownloadCard(!openDownloadCard)
     }
 
     useEffect(() => {
-        getMirrorsList()
-        getIsoLinks()
+        const controller = new AbortController()
+        getMirrorsList(controller.signal)
+
+        return () => {
+            controller.abort()
+            isoRequestRef.current?.abort()
+        }
     }, []);
 
     return (
@@ -177,8 +193,11 @@ function Mirror() {
                 {
                     loaded&&showMode==="list" ? <ListMode mirrorsList={mirrorsList}/> : <></>
                 }
+                {
+                    loaded&&loadError ? <div className="h-[50vh] flex items-center justify-center text-gray-500">镜像列表加载失败，请刷新页面重试</div> : <></>
+                }
             </div>
-            <DownloadCard open={openDownloadCard} setOpen={()=>setOpenDownloadCard()} isoLinks={isoLinks} isLoad={isIsoLinkLoad}></DownloadCard>
+            <DownloadCard open={openDownloadCard} setOpen={setOpenDownloadCard} isoLinks={isoLinks} isLoad={isIsoLinkLoad}></DownloadCard>
             <Footer/>
         </div>
 

@@ -1,44 +1,66 @@
-import React, {Fragment, useState} from 'react';
+import {Fragment, useState, useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import dayjs from "dayjs";
 
 import Loading from "src/components/Loading/Loading.jsx"
 import MarkdownContainer from "src/components/MarkdownContainer/MarkdownContainer.jsx";
 import Footer from "src/components/Layouts/Footer.jsx";
+import {getDocumentContent} from "../../../services/api.js";
 
 import DocsPageIconSVG from "src/assets/svg/docs-page-icon.svg?react";
 
 function DocumentViewer(props) {
     const {docsList,isDocsListLoad} = props
     const {route} = useParams()
+    const [content, setContent] = useState('')
+    const [isContentLoad, setIsContentLoad] = useState(false)
+    const [contentError, setContentError] = useState(false)
 
-    let selectArticle = {}
+    const selectArticle = route === undefined
+        ? undefined
+        : docsList.find(item => item.route === route)
+
     function calcTimestamp(time){
         return dayjs(time).format('YYYY-MM-DD')
     }
 
-    if(route !== undefined){
-        let result = docsList.find(item => item.route === route);
-        if(result) {
-            selectArticle = result;
+    useEffect(() => {
+        if (selectArticle?.url) {
+            const controller = new AbortController()
+            setContent('')
+            setContentError(false)
+            setIsContentLoad(false)
+            getDocumentContent(selectArticle.url, {signal: controller.signal})
+                .then(data => {
+                    setContent(data)
+                    setIsContentLoad(true)
+                })
+                .catch(error => {
+                    if (controller.signal.aborted) return
+                    console.error('获取文档内容失败:', error)
+                    setContentError(true)
+                    setIsContentLoad(true)
+                })
+
+            return () => controller.abort()
         }
-    }
+    }, [selectArticle?.url])
 
     return (
         <Fragment>
             {
-                (route === undefined || (Object.keys(selectArticle).length === 0 && isDocsListLoad)) ?
+                (route === undefined || (!selectArticle && isDocsListLoad)) ?
                     <div className="h-[50vh] min-h-[200px] flex justify-center items-center select-none">
                         <DocsPageIconSVG className="fill-blue-500 w-[100px] h-[100px]"></DocsPageIconSVG>
                         <div>
-                            <div className="text-3xl mb-2 min-[400px]:text-4xl">这里是文档页面</div>
-                            <div className="text-xl min-[400px]:text-2xl">浏览菜单来查看文档</div>
+                            <div className="text-3xl mb-2 min-[400px]:text-4xl">这里是博客页面</div>
+                            <div className="text-xl min-[400px]:text-2xl">浏览菜单来查看文章</div>
                         </div>
                     </div>
                     :
                     <Fragment>
                         {
-                            isDocsListLoad?
+                            isDocsListLoad && isContentLoad?
                                 <Fragment>
                                     <div className="mb-4 pb-4 border-b-2 border-gray-200 border-solid dark:border-gray-700">
                                         <div className="text-3xl md:text-[2.5rem]">{selectArticle.name}</div>
@@ -63,7 +85,9 @@ function DocumentViewer(props) {
 
                                     </div>
                                     <div className="pb-10 border-b-2 border-gray-200 border-solid dark:border-gray-700">
-                                        <MarkdownContainer url={selectArticle.url}></MarkdownContainer>
+                                        {contentError
+                                            ? <div className="py-10 text-center text-gray-500">文章加载失败，请刷新页面重试</div>
+                                            : <MarkdownContainer url={selectArticle.url} content={content}></MarkdownContainer>}
                                     </div>
 
                                 </Fragment>

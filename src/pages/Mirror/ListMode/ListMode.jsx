@@ -1,4 +1,3 @@
-import React, {Fragment, useEffect} from 'react';
 import dayjs from "dayjs";
 import {calcSize,renderTimestamp} from '/src/utils/utils.js'
 import SyncStatus from "./SyncStatus.jsx";
@@ -31,7 +30,7 @@ function ListMode(props) {
                 </thead>
                 <tbody>
                     {
-                        mirrorsList.map((item,index) => {
+                        mirrorsList.map((item) => {
                             let colBackgroundColor = SuccessBackgroundColor
                             let nowTimestamp = dayjs().unix()
                             // 这个变量表示当前镜像距上次同步是否已经超过24小时
@@ -42,11 +41,11 @@ function ListMode(props) {
 
                             if(isTimeout)colBackgroundColor = TimeoutBackgroundColor
 
-                            return <tr className={`${colBackgroundColor} hover:bg-opacity-50 duration-500`} key={index}>
+                            return <tr className={`${colBackgroundColor} hover:bg-opacity-50 duration-500`} key={item.name}>
                                 <th className="py-3 pl-4 text-left">
 
                                     <div className="flex items-center flex-wrap">
-                                        <a className="block relative min-w-0 flex-shrink overflow-hidden overflow-ellipsis mr-2 text-sky-400" href={item.url} target="_blank">
+                                        <a className="block relative min-w-0 flex-shrink overflow-hidden overflow-ellipsis mr-2 text-sky-400" href={item.url} target="_blank" rel="noopener">
                                             {item.name}
                                         </a>
                                         {

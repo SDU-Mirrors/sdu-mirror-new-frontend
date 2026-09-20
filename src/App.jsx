@@ -1,22 +1,21 @@
-import React from 'react'
-import {useRoutes} from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import routes from "/src/routes/index.jsx";
-import {ToastContainer,Slide} from 'react-toastify';
+import { ToastContainer, Slide } from 'react-toastify';
 // import './App.css'
 
 import Header from "./components/Layouts/Header.jsx";
-import UpdateNotification from "./components/UpdateNotification/UpdateNotification.jsx"
-import {HeaderProvider} from "./components/Layouts/HeaderContext.jsx";
-import {ThemeProvider} from "./components/ThemeProvider/ThemeProvider.jsx";
+import { HeaderProvider } from "./components/Layouts/HeaderContext.jsx";
+import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider.jsx";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop.jsx";
 function App() {
     const element = useRoutes(routes)
 
     return (
         <ThemeProvider>
             <HeaderProvider>
-                <UpdateNotification />
+                <ScrollToTop />
                 <div className="bg-base-100 dark:bg-base-100-dark dark:text-[#A6ADBB] min-h-screen duration-200 flex flex-col h-full">
-                    <Header/>
+                    <Header />
                     {element}
                 </div>
             </HeaderProvider>
@@ -32,11 +31,11 @@ function App() {
                 draggable
                 pauseOnHover
                 theme="colored"
-                transition: Slide
+                transition={Slide}
             />
         </ThemeProvider>
 
-  )
+    )
 }
 
 export default App

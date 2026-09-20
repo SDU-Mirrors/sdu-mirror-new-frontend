@@ -1,5 +1,4 @@
-import React, {Fragment} from 'react';
-import Footer from "../../components/Layouts/Footer.jsx";
+import Footer from "src/components/Layouts/Footer.jsx";
 
 import logo_big from "src/assets/source/logo_big.png"
 import sdu120 from "src/assets/source/sdu120.png"
@@ -27,7 +26,7 @@ function About() {
                                         <div className="flex px-[20px] py-[28px] h-[160px]">
                                             <div className="flex-shrink-0">
                                                 <img src={avatar} alt="img"
-                                                     className="rounded-full w-[100px] h-[100px]"/>
+                                                    className="rounded-full w-[100px] h-[100px]"/>
                                             </div>
                                             <div className="ml-4">
                                                 <div
@@ -37,7 +36,7 @@ function About() {
                                             </div>
                                         </div>
                                         <img src={sdu120} alt="sdu"
-                                             className="w-8 h-8 absolute right-2 bottom-2"/>
+                                            className="w-8 h-8 absolute right-2 bottom-2"/>
                                     </div>
                                 </div>
                             })}

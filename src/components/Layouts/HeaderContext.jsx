@@ -1,5 +1,5 @@
 // HeaderContext.js
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const HeaderContext = createContext();
 
@@ -13,6 +13,7 @@ export const HeaderProvider = ({ children }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useHeader = () => {
     return useContext(HeaderContext);
 };

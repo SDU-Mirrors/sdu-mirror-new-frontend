@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 
 import Menu from "../Menu/Menu.jsx"
@@ -14,7 +13,7 @@ function DialogMenu(props) {
                 <Dialog.Content aria-describedby={undefined}
                                 onOpenAutoFocus={(e)=>{e.preventDefault()}}
                                 className="bg-white fixed w-[90vw] max-w-[1600px] min-h-[300px] max-h-[80vh] rounded-xl flex flex-col p-4 top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 animate-overlayShow dark:bg-base-200-dark dark:text-[#A6ADBB]">
-                    <Dialog.Title className="text-2xl mb-4 select-none flex-shrink-0">新闻</Dialog.Title>
+                    <Dialog.Title className="text-2xl mb-4 select-none flex-shrink-0">文章</Dialog.Title>
 
                     <div className="overflow-y-auto">
                         <Menu docsList={docsList} isDocsListLoad={isDocsListLoad}></Menu>

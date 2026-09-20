@@ -1,5 +1,3 @@
-import React from 'react';
-
 import timelineArr from "./Timeline.json"
 function Timeline() {
     const colors = ["#706dff","#ff70a6","#ff9770","#ffd670","#9eb3c2"]

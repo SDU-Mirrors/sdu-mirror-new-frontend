@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Footer from "../../components/Layouts/Footer.jsx";
+import Footer from "src/components/Layouts/Footer.jsx";
 import Navigation from "src/pages/HomePage/Navigation/Navigation.jsx";
 import Timeline from "src/pages/HomePage/Timeline/Timeline.jsx";
 

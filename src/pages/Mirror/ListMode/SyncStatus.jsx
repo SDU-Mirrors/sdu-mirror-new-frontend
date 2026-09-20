@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import {Fragment} from 'react';
 
 function SyncStatus({status,sync_method}) {
     //只显示
@@ -36,7 +36,7 @@ function SyncStatus({status,sync_method}) {
         else if (status === 3) {
             return <Fragment>
                 <div className="w-[100px] mx-auto bg-blue-200 text-blue-400 select-none dark:bg-blue-900">
-                    SYNGING
+                    SYNCING
                 </div>
             </Fragment>
         }

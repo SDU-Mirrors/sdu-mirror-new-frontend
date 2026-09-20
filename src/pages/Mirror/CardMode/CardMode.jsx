@@ -1,6 +1,4 @@
-import React, {Fragment} from 'react';
-import { useNavigate } from 'react-router-dom'
-import Card from "../../../components/Card/Card.jsx";
+import Card from "src/components/Card/Card.jsx";
 
 import icons from '../icons.json'
 
@@ -21,7 +19,7 @@ function CardMode(props) {
             result = [{letter: firstChar, data: [item]}]
         }
         return result;
-    }, {});
+    }, []);
 
     //匹配图标
     function matchIcons(name) {
@@ -38,12 +36,12 @@ function CardMode(props) {
         <div>
             <div className="my-4">
                 {
-                    groupedMirrorsList.map((group, index) =>
-                        <div key={index}>
+                    groupedMirrorsList.map((group) =>
+                        <div key={group.letter}>
                             <div className="text-3xl font-bold my-4 select-none">{group.letter}</div>
                             <div
                                 className="grid grid-cols-[repeat(auto-fill,minmax(300px,_2fr))] min-[875px]:grid-cols-[repeat(auto-fill,minmax(400px,_1fr))] gap-4">
-                                {group.data.map((item,index) => <Card item = {item} icon = {matchIcons(item.name)} showFriendlyName = {showFriendlyName} key={index}/>)}
+                                {group.data.map((item) => <Card item = {item} icon = {matchIcons(item.name)} showFriendlyName = {showFriendlyName} key={item.name}/>)}
                             </div>
                         </div>
                     )

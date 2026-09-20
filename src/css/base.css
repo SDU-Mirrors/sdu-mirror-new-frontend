@@ -13,18 +13,22 @@
     --text-color-light: #000000;
 
     /* Dark mode colors */
-    --background-color-dark: #121212;
+    --background-color-dark: theme('colors.base-100.dark');
     --text-color-dark: #ffffff;
+    --scrollbar-thumb-color: rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="light"] {
+    color-scheme: light;
     --background-color: var(--background-color-light);
     --text-color: var(--text-color-light);
 }
 
 [data-theme="dark"] {
+    color-scheme: dark;
     --background-color: var(--background-color-dark);
     --text-color: var(--text-color-dark);
+    --scrollbar-thumb-color: rgba(255, 255, 255, 0.35);
 }
 
 body {
@@ -47,10 +51,10 @@ body {
     box-sizing: border-box;
 }
 
-em,
+/* em,
 i {
     font-style: normal
-}
+} */
 
 /*li {*/
 /*    list-style: none*/
@@ -82,7 +86,6 @@ input {
 
 body {
     -webkit-font-smoothing: antialiased;
-    background-color: #fff;
     font-family:Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
 }
 
@@ -99,25 +102,20 @@ body {
     height: 0
 }
 
-.clearfix {
-    *zoom: 1
-}
-
 /* 滚动条相关 */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background-color: rgba(0,0,0,0);
-}
-:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
+    background-color: var(--scrollbar-thumb-color);
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
     border-radius: 0;
-    background: rgba(0,0,0,0);
+    background: transparent;
 }
 
 /*@media (prefers-color-scheme: dark){*/
@@ -126,3 +124,11 @@ body {
 /*        color-scheme: dark;*/
 /*    }*/
 /*}*/
+
+/* 不支持 WebKit 滚动条的浏览器使用标准属性。 */
+@supports not selector(::-webkit-scrollbar) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb-color) transparent;
+    }
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import {useNavigate} from "react-router-dom";
 
 import logo_mini from 'src/assets/source/logo_mini.png'
@@ -18,11 +17,11 @@ function NotFoundPage() {
                     <div className="text-4xl my-2">您要找的页面似乎并不存在</div>
 
                     <div className="flex">
-                        <div onClick={() => navigate(-1)}
-                            className="text-[#9c0c13] hover:text-blue-400 duration-200 cursor-pointer">回到上一页</div>
+                        <button type="button" onClick={() => window.history.length <= 1 ? window.close() : navigate(-1)}
+                            className="text-[#9c0c13] hover:text-blue-400 duration-200 cursor-pointer">回到上一页</button>
                         <div className="flex-grow"></div>
-                        <div onClick={() => navigate('/')}
-                            className="text-[#9c0c13] hover:text-blue-400 duration-200 cursor-pointer">返回首页</div>
+                        <button type="button" onClick={() => navigate('/')}
+                            className="text-[#9c0c13] hover:text-blue-400 duration-200 cursor-pointer">返回首页</button>
                     </div>
 
                 </div>

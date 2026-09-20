@@ -1205,9 +1205,12 @@ footer {
 		</script>
 
 		<script {{ $nonceAttribute }}>
-			if (location.host.indexOf("localhost") < 0 && location.protocol.toLowerCase() !== "https:") {
-				const url = `https://${location.host + location.pathname}`;
-				location.replace(url);
+			if (/* __VITE_APP_ENABLE_HTTPS_REDIRECT__ */ false) {
+				if (location.host.indexOf("localhost") < 0 && location.protocol.toLowerCase() !== "https:") {
+					const url = new URL(location.href);
+					url.protocol = "https:";
+					location.replace(url.href);
+				}
 			}
 		</script>
 	</body>

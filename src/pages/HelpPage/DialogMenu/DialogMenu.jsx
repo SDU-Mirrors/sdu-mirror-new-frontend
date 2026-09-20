@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Menu from "../Menu/Menu.jsx"
 import CloseSVG from "src/assets/svg/close.svg?react";
